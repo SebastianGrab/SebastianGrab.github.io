@@ -220,7 +220,7 @@ export default function StrichlistePage() {
               onClick={handlePaymentSubmit}
               disabled={submittingPayment}
             >
-              {submittingPayment ? 'speichern…' : 'Betrag bezahlt'}
+              {submittingPayment ? 'speichern…' : 'Übermitteln'}
             </button>
 
             <div className="kpi-container">
