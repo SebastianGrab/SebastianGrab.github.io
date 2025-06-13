@@ -5,6 +5,13 @@ const GID_PRODUCTS = process.env.REACT_APP_GOOGLE_SHEET_PRODUCTS_GRID
 const GID_ENTRIES = process.env.REACT_APP_GOOGLE_SHEET_ENTRIES_GRID
 const GID_PAYMENTS = process.env.REACT_APP_GOOGLE_SHEET_PAYMENTS_GRID
 
+function clean(cell) {
+  return cell
+    .replace(/^"+|"+$/g, '')
+    .replace(/\r/g, '')
+    .trim();
+}
+
 if (!SHEET_ID) {
   console.log('Env var REACT_APP_GOOGLE_SHEET_ID: ', SHEET_ID)
   throw new Error("Missing env var REACT_APP_GOOGLE_SHEET_ID");
@@ -16,7 +23,14 @@ export async function fetchSheetAsCsv(gid) {
   const res = await fetch(url);
   if (!res.ok) throw new Error('Fetch failed');
   const text = await res.text();
-  return text.split('\n').map(line => line.split(','));
+  return text
+  .trim()
+  .split('\n')
+  .map(line =>
+    line
+      .split(',')
+      .map(cell => clean(cell))
+  );
 }
 
 export async function fetchNames() {

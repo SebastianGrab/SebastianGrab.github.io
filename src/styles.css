@@ -277,6 +277,44 @@ footer {
   cursor: default;
 }
 
+.kpi-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.kpi-item {
+  text-align: center;
+  flex: 1;
+}
+
+.kpi-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.kpi-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.kpi-offen .offen-icon {
+  margin-left: 6px;
+  font-size: 1.2rem;
+  vertical-align: middle;
+}
+
+.offen-icon.red {
+  color: #e76f51;
+}
+
+.offen-icon.green {
+  color: #2a9d8f;
+}
+
 .Toastify__toast--success {
   background: #fff;
 }

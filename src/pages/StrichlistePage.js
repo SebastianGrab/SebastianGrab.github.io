@@ -1,7 +1,7 @@
 // src/pages/StrichlistePage.js
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { fetchProducts, fetchNames, saveOrder, savePayment } from '../api';
+import { fetchProducts, fetchNames, saveOrder, savePayment, fetchEntries, fetchPayments } from '../api';
 import '../styles.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,6 +15,8 @@ export default function StrichlistePage() {
   const [showPayModal, setShowPayModal] = useState(false);
   const [paymentCents, setPaymentCents] = useState(0);
   const [submittingPayment, setSubmittingPayment] = useState(false);
+  const [entries, setEntries]       = useState([]);
+  const [payments, setPayments]     = useState([]);
 
   const loadData = () => {
     fetchNames()
@@ -24,6 +26,8 @@ export default function StrichlistePage() {
       })
       .catch(console.error);
     fetchProducts().then(setProducts).catch(console.error);
+    fetchEntries().then(setEntries).catch(console.error);
+    fetchPayments().then(setPayments).catch(console.error);
     setQty({});
     setName(null);
   };
@@ -184,7 +188,7 @@ export default function StrichlistePage() {
           onClick={handleSubmit}
           disabled={submitting}
         >
-          {submitting ? '…speichern…' : 'Übermitteln'}
+          {submitting ? 'speichern…' : 'Übermitteln'}
         </button>
       </footer>
 
@@ -214,8 +218,41 @@ export default function StrichlistePage() {
               onClick={handlePaymentSubmit}
               disabled={submittingPayment}
             >
-              {submittingPayment ? '…speichern…' : 'Übermitteln'}
+              {submittingPayment ? 'speichern…' : 'Betrag bezahlt'}
             </button>
+
+            <div className="kpi-container">
+              {(() => {
+                const name = selectedName.value;
+                const filteredEntries  = entries.filter(e => e.name === name);
+                const filteredPayments = payments.filter(p => p.name === name);
+                const totalEntries  = filteredEntries.reduce((sum, e) => sum + e.preis * e.menge, 0);
+                const totalPayments = filteredPayments.reduce((sum, p) => sum + p.betrag, 0);
+                const outstanding   = totalEntries - totalPayments;
+
+                return (
+                  <>
+                    <div className="kpi-item">
+                      <div className="kpi-label">Ausgaben</div>
+                      <div className="kpi-value">{totalEntries.toFixed(2)} €</div>
+                    </div>
+                    <div className="kpi-item">
+                      <div className="kpi-label">Bezahlt</div>
+                      <div className="kpi-value">{totalPayments.toFixed(2)} €</div>
+                    </div>
+                    <div className="kpi-item kpi-offen">
+                      <div className="kpi-label">Offen</div>
+                      <div className="kpi-value">
+                        {outstanding.toFixed(2)} €
+                        {outstanding > 0
+                          ? <span className="offen-icon red"> !</span>
+                          : <span className="offen-icon green"> ✔</span>}
+                      </div>
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
           </div>
         </div>
       )}
