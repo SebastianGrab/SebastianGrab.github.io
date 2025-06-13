@@ -219,7 +219,7 @@ export default function StrichlistePage() {
               className="modal-input"
               value={`${(paymentCents / 100).toFixed(2)} €`}
               onKeyDown={handleAmountKeyDown}
-              readOnly
+              // readOnly
               // onChange={e => {
               //   const digits = e.target.value.replace(/\D/g, '');
               //   let cents = parseInt(digits || '0', 10);
