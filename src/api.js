@@ -13,17 +13,16 @@ export async function fetchNames() {
 export async function saveOrder(order) {
   const res = await fetch(BASE, {
     method: 'POST',
-    mode:   'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(order)
+    body: JSON.stringify(order),
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
   });
   console.log('⟵ Got response:', res);
   
-  // if (!res.ok) {
-  //   const text = await res.text();
-  //   throw new Error(`Save failed: ${res.status} ${text}`);
-  // }
-  // return res.json();
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Save failed: ${res.status} ${text}`);
+  }
+  return res.json();
 
-  return true;
+  // return true;
 }
