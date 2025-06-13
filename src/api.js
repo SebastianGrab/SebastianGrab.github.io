@@ -24,7 +24,7 @@ export async function saveOrder(order) {
     body: JSON.stringify({ action: 'saveOrder', ...order }),
     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
   });
-  console.log('⟵ Got response:', res);
+  // console.log('⟵ Got response:', res);
   
   if (!res.ok) {
     const text = await res.text();
@@ -39,7 +39,7 @@ export async function savePayment(payment) {
     body: JSON.stringify({ action: 'savePayment', ...payment }),
     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
   });
-  console.log('⟵ Got response:', res);
+  // console.log('⟵ Got response:', res);
   
   if (!res.ok) {
     const text = await res.text();
