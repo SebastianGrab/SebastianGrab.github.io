@@ -205,12 +205,27 @@ export default function StrichlistePage() {
             >×</button>
             <h3 className="modal-title">Bezahlung</h3>
             
-            <input
+            {/* <input
               type="text"
               className="modal-input"
               value={`${(paymentCents/100).toFixed(2)} €`}
               onKeyDown={handleAmountKeyDown}
               readOnly
+            /> */}
+
+            <input
+              type="tel"
+              inputMode="numeric"
+              className="modal-input"
+              value={`${(paymentCents / 100).toFixed(2)} €`}
+              onKeyDown={handleAmountKeyDown}
+              readOnly
+              // onChange={e => {
+              //   const digits = e.target.value.replace(/\D/g, '');
+              //   let cents = parseInt(digits || '0', 10);
+              //   if (cents > 99999) cents = 99999;
+              //   setPaymentCents(cents);
+              // }}
             />
 
             <button
