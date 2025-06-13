@@ -1,7 +1,7 @@
 // src/pages/StrichlistePage.js
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { fetchProducts, fetchNames, saveOrder } from '../api';
+import { fetchProducts, fetchNames, saveOrder, savePayment } from '../api';
 import '../styles.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,8 +12,10 @@ export default function StrichlistePage() {
   const [selectedName, setName]     = useState(null);
   const [quantities, setQty]        = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const [showPayModal, setShowPayModal] = useState(false);
+  const [paymentCents, setPaymentCents] = useState(0);
+  const [submittingPayment, setSubmittingPayment] = useState(false);
 
-  // Daten (Names + Products) laden und Dropdown-Optionen bauen
   const loadData = () => {
     fetchNames()
       .then(raw => {
@@ -27,7 +29,6 @@ export default function StrichlistePage() {
   };
   useEffect(loadData, []);
 
-  // Menge increment / decrement
   const adjustQty = (titel, delta) => {
     setQty(q => {
       const newVal = Math.max(0, (q[titel]||0) + delta);
@@ -35,13 +36,11 @@ export default function StrichlistePage() {
     });
   };
 
-  // Gesamt berechnen
   const total = products.reduce(
     (sum, p) => sum + (quantities[p.titel] || 0) * p.preis,
     0
   );
 
-  // Bestellung abschicken
   const handleSubmit = async () => {
     if (!selectedName) return toast.error('Bitte Name wählen');
     const items = products
@@ -63,6 +62,57 @@ export default function StrichlistePage() {
       toast.error('Fehler beim Speichern');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handlePay = () => {
+    if (!selectedName) {
+      return toast.error('Zunächst einen Namen auswählen');
+    }
+    setShowPayModal(true);
+  };
+
+  const handleAmountKeyDown = e => {
+    e.preventDefault();
+    const key = e.key;
+
+    if (key >= '0' && key <= '9') {
+      setPaymentCents(c => {
+        const next = c * 10 + Number(key);
+        return next > 99999 ? c : next;
+      });
+    } else if (key === 'Backspace' || key === 'Delete') {
+      setPaymentCents(c => Math.floor(c / 10));
+    } else if (key === 'Enter') {
+      handlePaymentSubmit();
+    }
+  };
+
+  const handlePaymentSubmit = async () => {
+    const amt = paymentCents / 100;
+    if (!selectedName) {
+      return toast.error('Zunächst einen Namen auswählen');
+    }
+    if (amt <= 0) {
+      return toast.error('Bitte einen Betrag eingeben');
+    }
+
+    setSubmittingPayment(true);
+    try {
+      await savePayment({
+        name:   selectedName.value,
+        amount: amt
+      });
+      toast.success('Zahlung gespeichert!');
+      setShowPayModal(false);
+      setPaymentCents(0);
+      loadData();
+    } catch (err) {
+      console.error(err);
+      toast.error('Fehler beim Speichern der Zahlung');
+    }
+    finally {
+      setSubmittingPayment(false);
     }
   };
 
@@ -89,6 +139,13 @@ export default function StrichlistePage() {
               isDisabled={submitting || !names.length}
             />
           </div>
+          <button
+            className="pay-btn"
+            onClick={handlePay}
+            disabled={submitting}
+          >
+            Bezahlen
+          </button>
         </div>
 
         <div className="grid">
@@ -130,6 +187,38 @@ export default function StrichlistePage() {
           {submitting ? '…speichern…' : 'Übermitteln'}
         </button>
       </footer>
+
+      {showPayModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button
+              className="modal-close"
+              onClick={() => {
+                setShowPayModal(false);
+                setPaymentCents(0);
+              }}
+              disabled={submittingPayment}
+            >×</button>
+            <h3 className="modal-title">Bezahlung</h3>
+            
+            <input
+              type="text"
+              className="modal-input"
+              value={`${(paymentCents/100).toFixed(2)} €`}
+              onKeyDown={handleAmountKeyDown}
+              readOnly
+            />
+
+            <button
+              className="modal-submit-btn"
+              onClick={handlePaymentSubmit}
+              disabled={submittingPayment}
+            >
+              {submittingPayment ? '…speichern…' : 'Übermitteln'}
+            </button>
+          </div>
+        </div>
+      )}
 
       <ToastContainer
         position="top-right"
