@@ -336,3 +336,110 @@ footer {
     font-size: 1.4rem;
   }
 }
+
+
+/* Mobile-Optimierungen */
+@media (max-width: 550px) {
+  /* Header */
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  header h2 {
+    font-size: 1.1rem;
+  }
+  .logo {
+    height: 38px;
+    margin-right: 5px;
+    padding: 5px;
+  }
+  .refresh-btn {
+    font-size: 1.3rem;
+  }
+  .pay-btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .name-label {
+    font-size: 0.9rem;
+  }
+  .name-select {
+    width: 100%;
+  }
+
+  /* Grid */
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    padding: 12px;
+  }
+  .icon-wrap {
+    width: 60px; height: 60px;
+  }
+  .icon-wrap img {
+    max-width: 45px; max-height: 45px;
+  }
+  .title {
+    font-size: 0.95rem;
+  }
+  .price {
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+  }
+
+  /* Quantity controls */
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+  .qty-value {
+    min-width: 20px;
+    font-size: 0.95rem;
+  }
+
+  /* Footer */
+  .summary {
+    font-size: 1rem;
+  }
+  .submit-btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+
+  /* Modal */
+  .modal-content {
+    padding: 16px;
+    max-width: 300px;
+  }
+  .modal-title {
+    font-size: 1.1rem;
+  }
+  .modal-input {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    margin: 12px 0;
+  }
+  .modal-submit-btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+
+  /* KPIs */
+  .kpi-label {
+    font-size: 0.8rem;
+  }
+  .kpi-value {
+    font-size: 1rem;
+  }
+}
