@@ -59,7 +59,7 @@ export default function StrichlistePage() {
     setSubmitting(true);
     try {
       await saveOrder({ name: selectedName.value, items });
-      toast.success('Bestellung gespeichert!');
+      toast.success('Verzehr gespeichert!');
       loadData();
     } catch (e) {
       console.error(e);
