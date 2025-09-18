@@ -365,14 +365,14 @@ export default function StrichlistePage() {
             onClick={handleSubmitPaid}
             disabled={submittingPaying || submitting}
           >
-            {submittingPaying ? 'speichern…' : 'Sofort bezahlt'}
+            {submittingPaying ? 'Speichern…' : 'Sofort bezahlt'}
           </button>
           <button
             className="submit-btn"
             onClick={handleSubmit}
             disabled={submittingPaying || submitting}
           >
-            {submittingConsumption ? 'speichern…' : 'Auf die Stricherlliste'}
+            {submittingConsumption ? 'Speichern…' : 'Auf die Stricherlliste'}
           </button>
         </div>
       </footer>
@@ -404,7 +404,7 @@ export default function StrichlistePage() {
               onClick={handlePaymentSubmit}
               disabled={submittingPayment}
             >
-              {submittingPayment ? 'speichern…' : 'Übermitteln'}
+              {submittingPayment ? 'Speichern…' : 'Übermitteln'}
             </button>
 
             <div className="kpi-container">
