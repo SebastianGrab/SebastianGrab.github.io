@@ -373,7 +373,6 @@ export default function StrichlistePage() {
             disabled={submitting}
           >
             {submittingConsumption ? 'speichern…' : 'Auf die Stricherlliste'}
-            {submittingConsumption ? 'speichern…' : 'Übermitteln'}
           </button>
         </div>
       </footer>
