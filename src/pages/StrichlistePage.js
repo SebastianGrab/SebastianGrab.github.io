@@ -363,14 +363,14 @@ export default function StrichlistePage() {
           <button
             className="submit-btn"
             onClick={handleSubmitPaid}
-            disabled={submittingPaying}
+            disabled={submittingPaying || submitting}
           >
             {submittingPaying ? 'speichern…' : 'Sofort bezahlt'}
           </button>
           <button
             className="submit-btn"
             onClick={handleSubmit}
-            disabled={submitting}
+            disabled={submittingPaying || submitting}
           >
             {submittingConsumption ? 'speichern…' : 'Auf die Stricherlliste'}
           </button>
